@@ -57,7 +57,7 @@
           <el-footer>
             <el-row>
               <el-col class="footer">
-                Footer
+                <mfoot/>
               </el-col>
             </el-row>
           </el-footer>
@@ -157,18 +157,19 @@ export default {
     position: absolute;
     right: 0px;
     top: 60px;
-    bottom: 30px;
+    bottom: 50px;
     left: 0px;
     overflow-y: scroll;
     padding: 20px;
   }
   .footer {
     padding: 0px 0px 0px 0px;
-    background: $color-primary;
+    /*background: $color-primary;*/
+    border-top: 1px solid #bbb;
     margin-top: -20px;
     position:fixed;
     left: 0px;
     bottom:0;
-    height:30px;
+    height:50px;
   }
 </style>

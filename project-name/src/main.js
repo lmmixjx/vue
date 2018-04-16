@@ -10,6 +10,7 @@ import routes from './router/routers'
 import 'element-ui/lib/theme-chalk/index.css'
 import '../config/parameter_config'
 import axios from 'axios'
+import Footer from './components/footer/Footer.vue'
 
 Vue.config.productionTip = false
 // axios.defaults.baseURL = ''
@@ -24,6 +25,8 @@ require('./mock/mock.js')
 const router = new VueRouter({
   routes
 })
+
+Vue.component('mfoot', Footer)
 
 router.beforeEach((to, from, next) => {
   if (to.path !== '/login') {
