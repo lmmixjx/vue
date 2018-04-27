@@ -1,22 +1,18 @@
 <template>
   <div>
-
     <vue-drawer-layout
       ref="drawerLayout"
-      :drawer-width="800"
+      :drawer-width="300"
       :enable="true"
       :animatable="true"
-      :z-index="0"
-      :drawable-distance="Math.floor(800/3)"
+      :z-index="818"
+      :drawable-distance="300"
       :content-drawable="true"
       :backdrop="true"
       :backdrop-opacity-range="[0,0.4]"
       @mask-click="handleMaskClick">
       <div class="drawer" slot="drawer">
-        <div class="text">This is drawer</div>
-        <div class="hello">
-          <h2>Essential Links</h2>
-        </div>
+        <guide @hideGuide="guideselect" />
       </div>
       <div class="content" slot="content">
         <el-container>
@@ -27,13 +23,13 @@
                   <span @click="handleToggleDrawer"><img :src="img"/></span>
                 </el-col>
                 <el-col :span="16" class="title">
-                  <b>{{$store.state.pagetitle}}</b>
+                  <b>{{this.pagetname}}</b>
                 </el-col>
                 <el-col :span="3" class="userinfo">
                   <el-dropdown trigger="hover">
                   <span class="el-dropdown-link userinfo-inner">
                     <img :src="img2" class="image"/>
-                    {{sysusername}}
+                    {{this.username}}
                   </span>
                     <el-dropdown-menu slot="dropdown">
                       <el-dropdown-item>我的消息</el-dropdown-item>
@@ -69,107 +65,138 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import Vue from 'vue'
 import DrawerLayout from 'vue-drawer-layout'
+import GuidePanel from '../views/guide/GuidePanel.vue'
 
 Vue.use(DrawerLayout)
+Vue.component('guide', GuidePanel)
 
 export default {
   data () {
     return {
       img: require('@/assets/appstore.png'),
-      img2: require('@/assets/un.png'),
-      sysusername: '22'
+      img2: require('@/assets/actor.png'),
+      pagetname: '',
+      username: ''
     }
   },
   methods: {
+    ...mapActions([
+      'logoutaction',
+      'getUserInfo',
+      'gettitle',
+      'settitle'
+    ]),
     handleMaskClick () {
       this.$refs.drawerLayout.toggle(false)
     },
     handleToggleDrawer () {
       this.$refs.drawerLayout.toggle()
     },
-    gettest () {
-      console.log('gettest')
+    guideselect (title) {
+      this.pagetname = title
+      this.settitle(title)
+      this.$refs.drawerLayout.toggle(false)
+    },
+    logout () {
+      this.logoutaction()
+      this.$router.push({ path: '/login' })
+    },
+    initData () {
+      if (this.pagetitle) {
+        this.pagetname = this.pagetitle
+      }
+      if (this.userInfo && this.userInfo.username) {
+        this.username = this.userInfo.username
+      }
     }
   },
+  computed: {
+    ...mapState([
+      'userInfo',
+      'pagetitle'
+    ])
+  },
   mounted () {
-    let obj = JSON.parse(sessionStorage.getItem('sqlmanageruser'))
-    this.sysusername = obj.name
+    this.getUserInfo()
+    this.gettitle()
+    this.initData()
   }
 }
 
 </script>
 
 <style scoped lang="scss">
-  @import '~scss_vars';
+@import "~scss_vars";
 
-  .container{
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    width: 100%;
-    .header {
-      background: $color-primary;
-      padding: 0px 0px 0px 0px;
+.container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  .header {
+    background: $color-primary;
+    padding: 0px 0px 0px 0px;
+    height: 60px;
+    line-height: 60px;
+    .log {
+      /*width: 40px;*/
+      height: 60px;
+      /*border-radius: 20px;*/
+      margin-left: 5px;
+      margin-top: 5px;
+      /*float: right;*/
+    }
+    .title {
       height: 60px;
       line-height: 60px;
-      .log {
-        /*width: 40px;*/
-        height: 60px;
-        /*border-radius: 20px;*/
-        margin-left: 5px;
-        margin-top: 5px;
-        /*float: right;*/
+      color: white;
+      font-size: 32px;
+      text-align: center;
+    }
+    .userinfo {
+      height: 60px;
+      line-height: 60px;
+      text-align: right;
+      float: right;
+      .userinfo-inner {
+        cursor: pointer;
+        color: #fff;
+        font-size: 14px;
+        margin-right: 20px;
       }
-      .title {
-        height: 60px;
-        line-height: 60px;
-        color: white;
-        font-size: 32px;
-        text-align: center;
-      }
-      .userinfo{
-        height: 60px;
-        line-height: 60px;
-        text-align: right;
-        float: right;
-        .userinfo-inner {
-          cursor: pointer;
-          color:#fff;
-          font-size: 16px;
-          margin-right: 20px;
-        }
-        .image {
-          width: 40px;
-          height: 40px;
-          border-radius: 20px;
-          margin: 10px 10px 10px 10px;
-          float: left;
-        }
+      .image {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        margin: 10px 10px 10px 10px;
+        float: left;
       }
     }
   }
-  .main-container {
-    /*background: #f1f2f7;*/
-    /*flex:1;*/
-    position: absolute;
-    right: 0px;
-    top: 60px;
-    bottom: 50px;
-    left: 0px;
-    overflow-y: scroll;
-    padding: 20px;
-  }
-  .footer {
-    padding: 0px 0px 0px 0px;
-    /*background: $color-primary;*/
-    border-top: 1px solid #bbb;
-    margin-top: -20px;
-    position:fixed;
-    left: 0px;
-    bottom:0;
-    height:50px;
-  }
+}
+.main-container {
+  /*background: #f1f2f7;*/
+  /*flex:1;*/
+  position: absolute;
+  right: 0px;
+  top: 60px;
+  bottom: 50px;
+  left: 0px;
+  overflow-y: scroll;
+  padding: 20px;
+}
+.footer {
+  padding: 0px 0px 0px 0px;
+  /*background: $color-primary;*/
+  border-top: 1px solid #bbb;
+  margin-top: -20px;
+  position: fixed;
+  left: 0px;
+  bottom: 0;
+  height: 50px;
+}
 </style>

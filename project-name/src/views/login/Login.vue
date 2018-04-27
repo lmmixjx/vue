@@ -19,6 +19,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { getUser } from '@/service/getData'
+
 export default {
   data () {
     return {
@@ -39,36 +42,43 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'recorduserinfo',
+      'settitle'
+    ]),
+    async login (data) {
+      await getUser(data).then((res) => {
+        // console.log(res)
+        // console.log(res.user.username)
+        if (res.success === true) {
+          console.log('登录成功')
+          this.loding = false
+          this.recorduserinfo(res.user)
+          this.$message({
+            type: 'success',
+            showClose: true,
+            message: res.msg,
+            duration: 1000
+          })
+          this.settitle('SQL管理平台首页')
+          this.$router.push({ path: '/home' })
+        } else {
+          this.loding = false
+          this.$message({
+            type: 'error',
+            showClose: true,
+            message: res.msg
+          })
+        }
+      })
+    },
     loginmethod () {
       this.$refs.LoginInfo.validate((valid) => {
         if (valid) {
           this.loding = true
-          var data = {username: this.LoginInfo.username, password: this.LoginInfo.password}
+          var data = { username: this.LoginInfo.username, password: this.LoginInfo.password }
           console.log(data)
-          this.$axios.post('/empno/login', data).then(res => {
-            var obj = JSON.parse(res.data)
-            if (obj.success === true) {
-              console.log('登录成功')
-              this.loding = false
-              sessionStorage.setItem('sqlmanageruser', JSON.stringify(obj.user))
-              this.$message({
-                type: 'success',
-                showClose: true,
-                message: obj.msg,
-                duration: 1000
-              })
-              this.$store.commit('setTitle', 'SQL管理平台首页')
-              this.$store.commit('setUsername', this.LoginInfo.username)
-              this.$router.push({ path: '/AppkeyMain' })
-            } else {
-              this.loding = false
-              this.$message({
-                type: 'error',
-                showClose: true,
-                message: obj.msg
-              })
-            }
-          })
+          this.login(data)
         } else {
           this.$message({
             type: 'error',
@@ -83,52 +93,52 @@ export default {
 </script>
 
 <style>
-  .logininput{
-    /*background-color: rgba(255,255,255,0);*/
-    /*margin-top: 104px;*/
-    /*margin-left: 88px;*/
-    /*margin-left: 17px;*/
-    /*border: none;*/
-    width: 100%;
-    height: 44px;
-    line-height: 45px;
-    font-size: 16px;
-    /*outline:none;*/
-    text-transform:uppercase;
-    /*background-color: #fdd;*/
-  }
+.logininput {
+  /*background-color: rgba(255,255,255,0);*/
+  /*margin-top: 104px;*/
+  /*margin-left: 88px;*/
+  /*margin-left: 17px;*/
+  /*border: none;*/
+  width: 100%;
+  height: 44px;
+  line-height: 45px;
+  font-size: 16px;
+  /*outline:none;*/
+  text-transform: uppercase;
+  /*background-color: #fdd;*/
+}
 </style>
 
 <style lang="scss" scoped>
-  .login-container {
-    /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
-    -webkit-border-radius: 20px;
-    border-radius: 20px;
-    -moz-border-radius: 20px;
-    background-clip: padding-box;
-    margin: 180px auto;
-    width: 478px;
-    height: 304px;
-    padding: 35px 35px 15px 35px;
-    /*background: #fff;*/
-    /*border: 1px solid #eaeaea;*/
-    box-shadow: 0 0 25px #cac6c6;
-    background-color: #fdd;
-    /*background-image: url('~loginbg');*/
-    /*background-attachment: fixed;*/
-    background-position-x: center;
-    background-position-y: center;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    .col {
-      vertical-align:middle;
-      height: 100%;
-    }
-    .btn {
-      margin-top: 20px;
-      width: 60%;
-      align-items: center;
-      text-align:center;
-    }
+.login-container {
+  /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  background-clip: padding-box;
+  margin: 180px auto;
+  width: 478px;
+  height: 304px;
+  padding: 35px 35px 15px 35px;
+  /*background: #fff;*/
+  /*border: 1px solid #eaeaea;*/
+  box-shadow: 0 0 25px #cac6c6;
+  background-color: #fdd;
+  /*background-image: url('~loginbg');*/
+  /*background-attachment: fixed;*/
+  background-position-x: center;
+  background-position-y: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  .col {
+    vertical-align: middle;
+    height: 100%;
   }
+  .btn {
+    margin-top: 20px;
+    width: 60%;
+    align-items: center;
+    text-align: center;
+  }
+}
 </style>

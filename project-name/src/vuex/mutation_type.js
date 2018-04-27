@@ -1,0 +1,5 @@
+export const GET_USERINFO = 'GET_USERINFO'
+export const RECORD_USERINFO = 'RECORD_USERINFO'
+export const LOGOUT = 'LOGOUT'
+export const SET_PAGETITLE = 'SET_PAGETITLE'
+export const GET_PAGETITLE = 'GET_PAGETITLE'

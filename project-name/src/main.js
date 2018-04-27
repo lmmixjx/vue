@@ -11,9 +11,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '../config/parameter_config'
 import axios from 'axios'
 import Footer from './components/footer/Footer.vue'
+import { getUserLocal, remoreUserLocal } from './service/getData'
 
 Vue.config.productionTip = false
-// axios.defaults.baseURL = ''
 Vue.prototype.$axios = axios
 
 Vue.use(ElementUI)
@@ -30,14 +30,14 @@ Vue.component('mfoot', Footer)
 
 router.beforeEach((to, from, next) => {
   if (to.path !== '/login') {
-    var userobj = sessionStorage.getItem('sqlmanageruser')
+    var userobj = getUserLocal()
     if (userobj) {
       next()
     } else {
       next({ path: '/login' })
     }
   } else {
-    sessionStorage.removeItem('sqlmanageruser')
+    remoreUserLocal()
     next()
   }
 })
@@ -47,6 +47,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: {App},
+  components: { App },
   template: '<App/>'
 })

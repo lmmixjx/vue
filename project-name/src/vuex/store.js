@@ -1,26 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import actions from './actions'
+import getters from './getters'
+import mutations from './mutations'
 
 Vue.use(Vuex)
 
+const state = {
+  message: null,
+  pagetitle: null,
+  userInfo: null
+}
+
 const store = new Vuex.Store({
-  state: {
-    message: '',
-    pagetitle: null,
-    username: ''
-  },
-  mutations: {
-    setTitle (state, payload) {
-      state.pagetitle = payload
-    },
-    delTitle (state, payload) {
-      console.log(state)
-      state.pagetitle = null
-    },
-    setUsername (state, payload) {
-      state.username = payload
-    }
-  }
+  state,
+  getters,
+  actions,
+  mutations
 })
 
 export default store
