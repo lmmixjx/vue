@@ -139,7 +139,6 @@ export default {
       text-align: left;
       color: white;
       letter-spacing: 5px;
-      font-weight: bold;
       text-indent: 20px;
     }
   }

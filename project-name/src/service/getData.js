@@ -5,6 +5,14 @@ import fetch from '../config/fetch'
  */
 export const getUser = (data) => fetch('/empno/login', data, 'POST')
 /**
+ * 获得首页提交列表信息
+ */
+export const getHomeinfo = (data) => fetch('/sqlmanager/gethomecommit', data, 'POST')
+/**
+ * 获得所有可用版本信息
+ */
+export const getAvailableVersion = (data) => fetch('/sqlmanager/getavailableversion', data, 'POST')
+/**
  * 从本地获取用户信息
  */
 export const getUserLocal = () => sessionStorage.getItem('sqlmanageruser')

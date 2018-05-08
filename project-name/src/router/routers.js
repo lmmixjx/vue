@@ -13,20 +13,74 @@ let routes = [
     path: '/',
     component: DrawLayoutPanel,
     children: [
-      { path: '/', component: Home },
-      { path: '/home', component: Home },
-      { path: '/commit', component: Commit },
-      { path: '/query', component: Query },
-      { path: '/export', component: Export },
-      { path: '/project', component: Project },
-      { path: '/auth', component: Auth },
-      { path: '/users', component: Users }
-    ]
+      {
+        path: '/',
+        component: Home,
+        meta: {
+          title: '西软SQL管理平台'
+        }
+      },
+      {
+        path: '/home',
+        component: Home,
+        meta: {
+          title: '西软SQL管理平台'
+        }
+      },
+      {
+        path: '/commit',
+        component: Commit,
+        meta: {
+          title: '西软SQL管理平台'
+        }
+      },
+      {
+        path: '/query',
+        component: Query,
+        meta: {
+          title: '西软SQL管理平台'
+        }
+      },
+      {
+        path: '/export',
+        component: Export,
+        meta: {
+          title: '西软SQL管理平台'
+        }
+      },
+      {
+        path: '/project',
+        component: Project,
+        meta: {
+          title: '西软SQL管理平台'
+        }
+      },
+      {
+        path: '/auth',
+        component: Auth,
+        meta: {
+          title: '西软SQL管理平台'
+        }
+      },
+      {
+        path: '/users',
+        component: Users,
+        meta: {
+          title: '西软SQL管理平台'
+        }
+      }
+    ],
+    meta: {
+      title: '西软SQL管理平台'
+    }
   },
   {
     path: '/login',
     component: Login,
-    hidden: true
+    hidden: true,
+    meta: {
+      title: '登录'
+    }
   }
 ]
 

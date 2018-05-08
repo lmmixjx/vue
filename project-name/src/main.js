@@ -6,8 +6,8 @@ import store from './vuex/store'
 import VueRouter from 'vue-router'
 import App from './App'
 import ElementUI from 'element-ui'
-import routes from './router/routers'
 import 'element-ui/lib/theme-chalk/index.css'
+import routes from './router/routers'
 import '../config/parameter_config'
 import axios from 'axios'
 import Footer from './components/footer/Footer.vue'
@@ -29,6 +29,9 @@ const router = new VueRouter({
 Vue.component('mfoot', Footer)
 
 router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
   if (to.path !== '/login') {
     var userobj = getUserLocal()
     if (userobj) {

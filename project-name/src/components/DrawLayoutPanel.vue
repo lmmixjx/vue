@@ -43,11 +43,7 @@
           </el-header>
           <el-main>
             <div class="main-container">
-              <el-row style="height: 100%;">
-                <el-col style="">
-                  <router-view />
-                </el-col>
-              </el-row>
+              <router-view />
             </div>
           </el-main>
           <el-footer>
@@ -186,8 +182,14 @@ export default {
   top: 60px;
   bottom: 50px;
   left: 0px;
-  overflow-y: scroll;
-  padding: 20px;
+  // overflow-y: scroll;
+  // padding: 20px;
+  // .main-body {
+  //   right: 0px;
+  //   top: 0px;
+  //   bottom: 0px;
+  //   left: 0px;
+  // }
 }
 .footer {
   padding: 0px 0px 0px 0px;
