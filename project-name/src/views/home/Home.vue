@@ -11,19 +11,15 @@
     </el-menu>
     <el-row class="information">
       <el-row :span="24" class="informationTitle">
-        <el-col :span="1" class="maininfo">
-          提交概况
-        </el-col>
-        <el-col :span="23" class="num">
-          <span :span="24">
-            <el-col :span="1">
-              {{todaycommit}}
-            </el-col>
-            <el-col :span="23" class="des">
-              今日提交数
-            </el-col>
-          </span>
-        </el-col>
+        <span class="maininfo">
+          提交概况 &nbsp;&nbsp;&nbsp;&nbsp;
+        </span>
+        <span class="num">
+          {{todaycommit}}
+        </span>
+        <span class="des">
+          今日提交数
+        </span>
       </el-row>
       <el-row class="informationPanel">
         <el-row v-for="sql in sqllist" :key="sql.uuid">
@@ -50,15 +46,15 @@
                     <el-col :span="8" class="title">
                         版本
                       </el-col>
-                      <el-col :span="16" class="descript">
+                      <el-col :span="16" class="version">
                         {{sql.version_name}}
                       </el-col>
                     </el-col>
                     <el-col :span="6">
-                      <el-col :span="8" class="title">
+                      <el-col :span="10" class="title">
                         测试库执行时间
                       </el-col>
-                      <el-col :span="16" class="descript">
+                      <el-col :span="14" class="descript">
                         <!-- {{sql.exectime}} -->
                         <span v-if="sql.exectime > 100" class="exectime">
                           {{sql.exectime}}ms
@@ -79,10 +75,10 @@
                       </el-col>
                     </el-col>
                     <el-col :span="20">
-                    <el-col :span="1" class="title">
+                    <el-col :span="2" class="title">
                         涉及表
                       </el-col>
-                      <el-col :span="23" class="tables">
+                      <el-col :span="22" class="descript">
                         {{sql.involvetables}}
                       </el-col>
                     </el-col>
@@ -193,13 +189,13 @@ export default {
         margin-top: 7px;
         font-size: 30px;
         text-align: right;
-        .des {
-          font-size: 5px;
-          text-align: left;
-          text-indent: 10px;
-          margin-top: 20px;
-          color: gray;
-        }
+      }
+      .des {
+        font-size: 5px;
+        text-align: left;
+        text-indent: 10px;
+        margin-top: 20px;
+        color: gray;
       }
     }
     .informationPanel {
@@ -242,9 +238,8 @@ export default {
           .title {
             color: gray;
           }
-          .tables {
+          .version {
             color: cornflowerblue;
-            text-indent: 28px;
           }
           .descript {
             // text-indent: 20px;
