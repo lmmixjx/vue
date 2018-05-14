@@ -120,17 +120,14 @@
         </el-row>
       </el-row>
       <el-row class="paging">
-       <div class="block">
         <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-sizes="[pagesize]"
         :page-size="pagesize"
-       layout="total, prev, pager, next, jumper"
-       :total="sqllistSource.length">
-       </el-pagination>
-        </div>
+        layout="total, prev, pager, next, jumper"
+        :total="sqllistSource.length" />
       </el-row>
     </el-row>
   </el-col>
@@ -318,7 +315,6 @@ export default {
     }
     .paging {
       height: 60px;
-      // margin-left: 20px;
       text-align: center;
     }
   }
