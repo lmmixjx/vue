@@ -9,7 +9,7 @@
         </el-submenu>
       </el-submenu>
     </el-menu>
-    <el-row class="information">
+    <el-row class="information"  v-loading="loding">
       <el-row :span="24" class="informationTitle">
         <span class="maininfo">
           提交概况 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -85,7 +85,7 @@
                   </el-row>
                 </el-col>
                 <el-col :span="6" class="btnPanel">
-                  <el-button class="btn" title="完整SQL">
+                  <el-button class="btn" title="完整SQL" @click="showInfo=true,parameter=sql.uuid">
                     <img :src="img" class="btnimage"/>
                   </el-button>
                 </el-col>
@@ -102,10 +102,38 @@
             </el-card>
           </el-row>
         </el-row>
+        <el-row v-for="sql in sqllist" :key="sql.uuid">
+         <el-dialog v-if="sql.uuid==parameter" class="sqldetail shows"
+           :visible.sync="showInfo"
+           append-to-body="true">
+           <div slot="title">完整SQL</div>
+           <!-- <div v-html="sql.sql" class="sql">{{sql.sql}}</div> -->
+           <el-input
+           type="textarea"
+           v-html="sql.sql">
+           {{sql.sql}}
+           </el-input>
+           <div slot="footer">
+             <el-button type="primary" @click="showInfo = false">退 出</el-button>
+           </div>
+           </el-dialog>
+        </el-row>
+      </el-row>
+      <el-row class="paging">
+       <div class="block">
+        <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[pagesize]"
+        :page-size="pagesize"
+       layout="total, prev, pager, next, jumper"
+       :total="sqllistSource.length">
+       </el-pagination>
+        </div>
       </el-row>
     </el-row>
   </el-col>
-  <!-- <iframe src="http://xmsdp.test.foxhis.com/" frameborder="0" width="100%" height="100%"/> -->
 </template>
 
 <script>
@@ -114,14 +142,28 @@ import { getHomeinfo, getAvailableVersion } from '@/service/getData'
 export default {
   data () {
     return {
+      parameter: 0,
+      sqllistSource: [],
       sqllist: [],
       versionlist: [],
       selectoption: '全部版本',
       todaycommit: 27,
-      img: require('@/assets/sqldetail.png')
+      img: require('@/assets/sqldetail.png'),
+      showInfo: false,
+      currentPage: 1,
+      pagesize: 5,
+      loding: true
     }
   },
   methods: {
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
+      this.currentPage = val
+      this.sqllist = this.sqllistSource.slice(this.pagesize * (this.currentPage - 1), this.pagesize * this.currentPage)
+    },
     handleChange (value) {
       console.log(value)
     },
@@ -154,8 +196,11 @@ export default {
             }
           }
           this.sqllist[i].sql = convertsql
+          this.sqllistSource[i] = this.sqllist[i]
         }
+        this.sqllist = this.sqllistSource.slice(this.pagesize * (this.currentPage - 1), this.pagesize * this.currentPage)
       })
+      this.loding = false
     },
     async getversion () {
       await getAvailableVersion().then((res) => {
@@ -178,7 +223,7 @@ export default {
     height: 60px;
   }
   .information {
-    height: 100%;
+    height: 95%;
     .informationTitle {
       height: 60px;
       margin-left: 20px;
@@ -271,6 +316,40 @@ export default {
       content: "";
       background-color: #eff1f3;
     }
+    .paging {
+      height: 60px;
+      // margin-left: 20px;
+      text-align: center;
+    }
   }
+}
+.shows {
+  float: left;
+  text-align: left;
+  .title {
+    font-size: 25px;
+    text-align: center;
+    // background-color: gray;
+    // color: white;
+  }
+  .sql {
+    height: 300px;
+    overflow: auto;
+    border: 1px solid #dfc6c6;
+    font-size: 15px;
+  }
+}
+</style>
+
+<style lang="scss">
+.sqldetail .el-dialog__header {
+  padding: 0px 0px 0px 0px;
+  font-size: 25px;
+  text-align: center;
+  background-color: gray;
+  font-weight: bold;
+  color: white;
+  height: 60px;
+  line-height: 60px;
 }
 </style>

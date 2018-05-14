@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-container class="container">
+    <el-container class="guide container">
       <el-header class="header">
         <el-col :span="8" class="imgcon">
           <img :src="img"/>
@@ -43,6 +43,10 @@
               <img :src="img8" />
               <span class="inner_text">用户维护</span>
             </el-menu-item>
+            <el-menu-item index="home">
+              <img :src="imghome" />
+              <span class="inner_text">返回首页</span>
+            </el-menu-item>
           </el-menu>
         </el-row>
       </el-main>
@@ -63,7 +67,8 @@ export default {
       img5: require('@/assets/export.png'),
       img6: require('@/assets/version.png'),
       img7: require('@/assets/auth.png'),
-      img8: require('@/assets/users.png')
+      img8: require('@/assets/users.png'),
+      imghome: require('@/assets/home.png')
     }
   },
   mounted () {
@@ -106,6 +111,9 @@ export default {
           break
         case 'users':
           title = '用户维护'
+          break
+        case 'home':
+          title = '西软SQL管理平台'
           break
         default:
           title = 'UNKOWN'
